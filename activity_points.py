@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
+from bs4 import BeautifulSoup
 
 URL = "https://www.rajagiritech.ac.in/stud/ktu/Student/"
 driver = webdriver.Chrome()
@@ -26,7 +27,6 @@ activityPoints = pd.DataFrame(classCodes, columns=['SemCode'])
 activityPoints['Semester'] = "Semester " + activityPoints['SemCode'].str[-3]
 activityPoints['Points'] = [0] * len(activityPoints)
 activityPoints = activityPoints.sort_values(by='SemCode')
-print(activityPoints)
 
 combined_df = []
 start_row = 0
@@ -56,8 +56,11 @@ with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
                 continue
 
             table_html = table.get_attribute("outerHTML")
-            df = pd.read_html(table_html, header=0)[0].iloc[:-1]
+            soup = BeautifulSoup(table_html, "html.parser")
+            df = pd.read_html(str(soup), header=0)[0].iloc[:-1]
             df = df.dropna(how='all').reset_index(drop=True)
+            certificate_links = [f"https://www.rajagiritech.ac.in/stud/ktu/Student/{a['href']}" for a in soup.find_all('a', href=True)]
+            df['Certificate (File Size<500kb)'] = certificate_links
             df['Rating By Faculty'] = df['Rating By Faculty'].replace(np.nan, 0)
             df.index += 1
             activityPoints.loc[index, 'Points'] += df['Rating By Faculty'].sum()
@@ -72,7 +75,6 @@ with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
 
         start_row = 0
         sheet_name = activityPoints.loc[index, 'Semester']
-        print(f"\nsheetname: {sheet_name}\n" )
         
         for df in combined_df:
             df.to_excel(writer,sheet_name=sheet_name, startrow=start_row, index=False)
