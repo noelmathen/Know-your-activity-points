@@ -1,5 +1,5 @@
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 # # Define data
 # data1 = {
 #     'Name': ['Alice', 'Bob', 'Charlie'],
@@ -52,7 +52,6 @@ import numpy as np
 
 
 
-
 # import pandas as pd
 
 # # Create a string variable
@@ -71,11 +70,11 @@ import numpy as np
 
 
 
-import pandas as pd
-df = pd.DataFrame({'A': [1, 2, np.nan, np.nan, np.nan], 'B': [3, 4, np.nan, 5, np.nan]})
-print(df)
-df = df.dropna(how='all')
-print(df)
+# import pandas as pd
+# df = pd.DataFrame({'A': [1, 2, np.nan, np.nan, np.nan], 'B': [3, 4, np.nan, 5, np.nan]})
+# print(df)
+# df = df.dropna(how='all')
+# print(df)
 
 
 
@@ -97,3 +96,24 @@ print(df)
 
 # # Display the DataFrame
 # print(df)
+
+
+import pandas as pd
+
+# List of DataFrames
+list_of_dfs = [pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]}),
+               pd.DataFrame({'C': [7, 8, 9], 'D': [10, 11, 12]})]
+
+# Excel file name
+excel_file = 'output.xlsx'
+
+# Create a Pandas Excel writer object
+with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
+    # Iterate over each DataFrame and write it to a new sheet
+    for i, df in enumerate(list_of_dfs, start=1):
+        # Define sheet name
+        sheet_name = f'Sheet_{i}'
+        # Write DataFrame to Excel file
+        df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+print("DataFrames written to Excel file successfully!")
