@@ -61,7 +61,6 @@ with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
                 # Extract HTML table
                 table = driver.find_element(By.XPATH, "//table[@class='table table-striped']")
             except:
-                print("No certificates added. Moving on.......")
                 continue
 
             # Parse HTML table
