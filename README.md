@@ -52,7 +52,7 @@ This Python script automates the process of fetching and calculating activity po
 
 #### Online Execution:
 
-- The script can be executed online using the provided Colab notebook: [activity_points.ipynb](link-to-colab-notebook).
+- The script can be executed online using the provided Colab notebook: [activity_points.ipynb](https://colab.research.google.com/github/noelmathen/Know-your-activity-points/blob/main/activity_points.ipynb).
   
 - Users can access and run the notebook on any device, including mobile phones, by opening it in Google Colab.
 
